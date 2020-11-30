@@ -1,10 +1,10 @@
 import {useState} from 'react';
 
 function App() {
-  const [count,setCount] = useState(0);
+  const [count,setCount] = useState(0); //useState() returns an updater function along with set function, which has access to previous state value
 
   const incremetCount = () => {
-    setCount(count+1);
+    setCount(prevCount => prevCount+1);
   }
 
   return (
