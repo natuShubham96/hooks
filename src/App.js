@@ -3,13 +3,29 @@ import {useState, useEffect} from 'react';  //useEffect is used to handle side e
 function App() {
   const [count,setCount] = useState(0); //useState() returns an updater function along with set function, which has access to previous state value
   const [toggle,setToggel] = useState(false);
+  const [mousePosition, setMousePosition] = useState({x: null, y: null}); //Using useState to add an object to state
 
   useEffect(() => {
     document.title = `Clicked - ${count} times`;
-  })   //useEffect gets called everytime after render executes.
+    window.addEventListener("mousemove", handleMouseMove)
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    }
+  }, [count])   //useEffect gets called everytime after render executes.
+
+  // To make useEffect behave like componentWillUnmount, we return a funtion from it, this function is returned everytime before a render, to cleanup effects of previous render and when component unmounts
+  //To prevent useEffect being called after and before every render, we can pass a second argument, which is an array of dynamic static values which are changing, if we keep it empty, then impact of state change will not be visible as when we return from useEffect previous render changes are flushed.
 
   const incremetCount = () => {
     setCount(prevCount => prevCount+1);
+  }
+
+  const handleMouseMove = (event) => {
+    setMousePosition({
+      x: event.x,
+      y: event.y
+    })
   }
 
   const toggleChange = () => {
@@ -18,10 +34,15 @@ function App() {
 
   return (
     <>
-    <div className="App">
+    <h2>Handle Counter!!</h2>
+    <div>
       <button onClick={incremetCount}>Button clicked {count} times</button>
     </div>
+    <h2>Toggle Colour!!!</h2>
     <div onClick={toggleChange} style={{height: "50px", width: "50px", background: toggle? "yellow" : "grey"}}/>
+    <h2>Mouse Position</h2>
+    <h3>{`x - ${mousePosition.x}`}</h3>
+    <h3>{`y - ${mousePosition.y}`}</h3>
     </>
   );
 }
