@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 //import App from './App';
-import App from './login';
+//import App from './login';
+import App from './register'
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
