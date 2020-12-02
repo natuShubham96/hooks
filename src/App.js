@@ -4,13 +4,18 @@ function App() {
   const [count,setCount] = useState(0); //useState() returns an updater function along with set function, which has access to previous state value
   const [toggle,setToggel] = useState(false);
   const [mousePosition, setMousePosition] = useState({x: null, y: null}); //Using useState to add an object to state
+  const [status, setStatus] = useState(navigator.onLine);
 
   useEffect(() => {
     document.title = `Clicked - ${count} times`;
-    window.addEventListener("mousemove", handleMouseMove)
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
     }
   }, [count])   //useEffect gets called everytime after render executes.
 
@@ -19,6 +24,14 @@ function App() {
 
   const incremetCount = () => {
     setCount(prevCount => prevCount+1);
+  }
+
+  const handleOnline = () => {
+    setStatus(true);
+  }
+
+  const handleOffline = () => {
+    setStatus(false);
   }
 
   const handleMouseMove = (event) => {
@@ -43,6 +56,7 @@ function App() {
     <h2>Mouse Position</h2>
     <h3>{`x - ${mousePosition.x}`}</h3>
     <h3>{`y - ${mousePosition.y}`}</h3>
+    <h2>{`Network Status!!! ${status}`}</h2>
     </>
   );
 }
